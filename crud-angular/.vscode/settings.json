@@ -1,0 +1,23 @@
+{
+    "angular.enable-strict-mode-prompt": false,
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#c720f4",
+        "activityBar.background": "#c720f4",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#5b4904",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#c720f4",
+        "statusBar.background": "#ab0bd6",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#c720f4",
+        "statusBarItem.remoteBackground": "#ab0bd6",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#ab0bd6",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#ab0bd699",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#AB0BD6"
+}

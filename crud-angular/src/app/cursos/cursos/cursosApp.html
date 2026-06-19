@@ -1,0 +1,58 @@
+<mat-card>
+
+  <mat-toolbar>
+    <span class="tituloSpan">Cursos Disponíveis</span>
+  </mat-toolbar>
+
+  <!--logica para exibir cursos e enquanto não carrega os dados,ele mostra o spinner -->
+  @if(cursos | async; as cursos) {
+ <mat-table [dataSource]="cursos">
+
+
+    <!--COLUNA NOME -->
+    <ng-container matColumnDef="nome">
+      <mat-header-cell *matHeaderCellDef style="background-color: darkgoldenrod;font-weight: bold;"> Nome </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
+    </ng-container>
+
+    <!-- COLUNA CATEGORIA -->
+    <ng-container matColumnDef="categoria">
+      <mat-header-cell *matHeaderCellDef style="background-color: darkgoldenrod;font-weight: bold;"> Categoria </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.categoria}}
+        <mat-icon aria-hidden="false" aria-label="Example home icon">{{(row.categoria | categoria)}}</mat-icon>  <!--Tag para adicionar ícone -->
+      </mat-cell>
+    </ng-container>
+
+     <!-- COLUNA AÇÕES -->
+    <ng-container matColumnDef="acoes">
+      <mat-header-cell *matHeaderCellDef style="background-color: darkgoldenrod;font-weight: bold;">
+        <button matMiniFab aria-label="Adicionar ação">
+        <mat-icon (click)="onAdd()">add</mat-icon>
+      </button>
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let row">
+        <button matIconButton style="color: rgb(0, 74, 235);" aria-label="Editar curso">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button matIconButton style="color: rgb(255, 1, 1);" aria-label="Excluir curso">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+
+    </ng-container>
+
+
+    <!-- DECARAÇÃO EXIBIÇÃO COLUNAS -->
+    <mat-header-row *matHeaderRowDef="['nome', 'categoria', 'acoes']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['nome', 'categoria', 'acoes']" style="font-weight: bold;"></mat-row>
+  </mat-table>
+
+} @else {
+  <div class="spinner-container">
+  <mat-spinner></mat-spinner>
+  </div>
+}
+
+</mat-card>
