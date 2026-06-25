@@ -1,1 +1,27 @@
-<p>curso-form works!</p>
+  <mat-card>
+    <mat-toolbar style="color: white; background-color: rgb(3, 118, 116);" class="toolbar">Cadastro de Cursos</mat-toolbar>
+
+    <mat-card-content> <!-- tag do conteúdo do cartão -->
+  <form [formGroup]="form" class="min-width">
+    <mat-form-field appearance="outline" class="largura-linha">
+      <input matInput placeholder="NOME" formControlName="nome" >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="largura-linha">
+      <mat-label>Selecionar Categoria</mat-label>
+ <mat-select formControlName="categoria">
+    <mat-option value="null"></mat-option>
+    <mat-option value="option2">Back-End</mat-option>
+    <mat-option value="option3">Front-End</mat-option>
+  </mat-select>
+      <input matInput placeholder="CATEGORIA" >
+    </mat-form-field>
+  </form>
+  </mat-card-content>
+
+    <mat-card-actions><!-- tag do rodapé do cartão com botoes-->
+      <button matButton="filled" (click)="onSubmit()">Salvar</button>
+      <button matButton="elevated" >Cancelar</button>
+    </mat-card-actions>
+
+  </mat-card>
