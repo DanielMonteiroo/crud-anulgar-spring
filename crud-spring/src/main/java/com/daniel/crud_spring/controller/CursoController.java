@@ -2,9 +2,9 @@ package com.daniel.crud_spring.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +24,13 @@ public class CursoController {
     @GetMapping // Mapeia requisições GET para este método
     public List<Curso> lista() {
         return cursoRepositorio.findAll(); // Retorna uma lista contendo o curso criado
+    }
+
+    @GetMapping("/{id}") // Mapeia requisições GET para este método, com um parâmetro de caminho "id"
+    public ResponseEntity<Curso> buscaId(@PathVariable Long id) {
+        return cursoRepositorio.findById(id)
+                .map(busca -> ResponseEntity.ok().body(busca)) //retorna o status 200 e o curso encontrado
+                .orElse(ResponseEntity.notFound().build()); //retorna o status 404 caso o curso não seja encontrado
     }
 
     @PostMapping // Mapeia requisições POST para este método

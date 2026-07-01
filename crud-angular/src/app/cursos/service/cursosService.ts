@@ -18,7 +18,7 @@ export class CursosService {
     return this.httpClient.get<Curso[]>(this.API);//chamada do método get para ler o arquivo json
   }
 
-  save(curso: Curso){
+  save(curso: Partial<Curso>){
     return this.httpClient.post<Curso>(this.API, curso);
   }
 }
