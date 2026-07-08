@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CursosService } from '../service/cursosService';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-curso-form',
@@ -15,10 +16,21 @@ import { Location } from '@angular/common';
 export class CursoForm {
 
   form: FormGroup;
-  constructor(private formBuilder: NonNullableFormBuilder,private service: CursosService,private snackBar: MatSnackBar,private location: Location) {
+  constructor(private formBuilder: NonNullableFormBuilder,private service: CursosService,
+    private snackBar: MatSnackBar,private location: Location,private route: ActivatedRoute) {
     this.form = this.formBuilder.group({
       nome: [''],
       categoria: ['']
+    });
+  }
+
+//metodo para inicializar o formulário com os dados do curso ao clicar no botão de editar
+  ngOnInit() {
+    this.service.loadById(this.route.snapshot.params['id']).subscribe(curso => {
+      this.form.patchValue({
+        nome: curso.nome,
+        categoria: curso.categoria
+      });
     });
   }
 

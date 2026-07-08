@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { catchError, delay, first, Observable, of, tap } from 'rxjs';
-import { Curso } from '../model/cursoModel';
-import { CursosService } from './../service/cursosService';
-import { AppMaterialModule } from '../../shared/app-material/app-material-module';
 import { AsyncPipe } from '@angular/common';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, Observable, of } from 'rxjs';
+import { AppMaterialModule } from '../../shared/app-material/app-material-module';
 import { ErrorDialog } from '../../shared/componentes/error-dialog/error-dialog';
 import { CategoriaPipe } from "../../shared/pipes/categoria-pipe";
-import { ActivatedRoute, Router } from '@angular/router';
+import { Curso } from '../model/cursoModel';
+import { CursosService } from './../service/cursosService';
 
 
 @Component({
@@ -42,6 +42,10 @@ onError(erroMsg: string) { //metodo para abrir o dialog de erro
 
   onAdd() {
     this.router.navigate(['new'], { relativeTo: this.route }); //navega para a rota 'new' relativa à rota atual (cursos) para adicionar um novo curso
+  }
+
+  onEdit(row: Curso){
+    this.router.navigate(['edit', row.id], { relativeTo: this.route });//navega para a rota 'edit' relativa à rota atual (cursos) passando o id do curso a ser editado
   }
 
 }

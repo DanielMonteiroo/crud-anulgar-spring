@@ -21,4 +21,8 @@ export class CursosService {
   save(curso: Partial<Curso>){
     return this.httpClient.post<Curso>(this.API, curso);
   }
+
+  loadById(id: number){
+    return this.httpClient.get<Curso>(`${this.API}/${id}`);//chamada do método get para ler o arquivo json com o id do curso
+  }
 }

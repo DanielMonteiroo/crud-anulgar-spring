@@ -32,7 +32,7 @@
       </mat-header-cell>
 
       <mat-cell *matCellDef="let row">
-        <button matIconButton style="color: rgb(0, 74, 235);" aria-label="Editar curso">
+        <button (click)="onEdit(row)" matIconButton style="color: rgb(0, 74, 235);" aria-label="Editar curso">
           <mat-icon>edit</mat-icon>
         </button>
 

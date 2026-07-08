@@ -6,7 +6,8 @@ import { CursoForm } from './curso-form/curso-form';
 
 const routes: Routes = [
   {path:'',component:CursosApp},
-  {path:'new',component:CursoForm}
+  {path:'new',component:CursoForm},
+  {path:'edit/:id',component:CursoForm}
 ];
 
 @NgModule({
