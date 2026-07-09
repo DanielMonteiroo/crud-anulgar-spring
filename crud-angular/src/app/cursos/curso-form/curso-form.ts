@@ -19,6 +19,7 @@ export class CursoForm {
   constructor(private formBuilder: NonNullableFormBuilder,private service: CursosService,
     private snackBar: MatSnackBar,private location: Location,private route: ActivatedRoute) {
     this.form = this.formBuilder.group({
+      id: [''],
       nome: [''],
       categoria: ['']
     });
@@ -28,6 +29,7 @@ export class CursoForm {
   ngOnInit() {
     this.service.loadById(this.route.snapshot.params['id']).subscribe(curso => {
       this.form.patchValue({
+        id: curso.id,
         nome: curso.nome,
         categoria: curso.categoria
       });
