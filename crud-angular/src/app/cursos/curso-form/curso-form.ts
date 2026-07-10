@@ -27,13 +27,17 @@ export class CursoForm {
 
 //metodo para inicializar o formulário com os dados do curso ao clicar no botão de editar
   ngOnInit() {
-    this.service.loadById(this.route.snapshot.params['id']).subscribe(curso => {
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+
+  if (id) {
+    this.service.loadById(id).subscribe(curso => {
       this.form.patchValue({
         id: curso.id,
         nome: curso.nome,
         categoria: curso.categoria
       });
     });
+  }
   }
 
   //metodo para submeter o formulário

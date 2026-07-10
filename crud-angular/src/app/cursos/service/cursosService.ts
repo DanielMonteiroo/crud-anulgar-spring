@@ -27,6 +27,10 @@ export class CursosService {
     return this.create(curso);
   }
 
+  delete(id: number){
+    return this.httpClient.delete(`${this.API}/${id}`);//chamada do método delete para deletar um curso existente
+  }
+
   private create(curso: Partial<Curso>){
     return this.httpClient.post<Curso>(this.API, curso);//chamada do método post para criar um novo curso
   }
