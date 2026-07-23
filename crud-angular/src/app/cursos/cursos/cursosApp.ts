@@ -9,6 +9,7 @@ import { CategoriaPipe } from "../../shared/pipes/categoria-pipe";
 import { Curso } from '../model/cursoModel';
 import { CursosService } from './../service/cursosService';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialog } from '../../shared/componentes/confirm-dialog/confirm-dialog';
 
 
 @Component({
@@ -51,21 +52,28 @@ onError(erroMsg: string) { //metodo para abrir o dialog de erro
   }
 
   onDelete(row: Curso){
-    this.cursosService.delete(row.id).subscribe({
-      next: () => {
-        this.cursosService.list().subscribe(cursos => {
-          this.cursos = of(cursos); //atualiza a lista de cursos após a exclusão
-        });
-        this.snackbar.open('Curso excluído com sucesso!', 'Fechar',
-        { duration: 5000, verticalPosition: 'top', horizontalPosition: 'center' }); //exibe uma mensagem de sucesso usando o MatSnackBar
-
-         window.location.reload();
-      },
-      error: () => {
-        this.onError('Não foi possível excluir o curso. Por favor, tente novamente mais tarde.'); //chama o método onError para exibir a mensagem de erro
-      }
+   const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: 'tem certeza que deseja excluir este item?',
     });
 
+   dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.cursosService.delete(row.id).subscribe({
+          next: () => {
+             this.cursosService.list().subscribe(cursos => {
+          this.cursos = of(cursos); //atualiza a lista de cursos após a exclusão
+        });
+            this.snackbar.open('Curso excluído com sucesso!', 'Fechar', { duration: 3000, horizontalPosition: 'center', verticalPosition: 'top' });
+            window.location.reload();
+          },
+          error: () => {
+            this.onError('Não foi possível excluir o curso. Por favor, tente novamente mais tarde.');
+          }
+        });
+      }
+    }
+      );
 }
+
 
 }

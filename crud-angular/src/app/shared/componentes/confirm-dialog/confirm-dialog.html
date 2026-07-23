@@ -1,0 +1,13 @@
+<mat-dialog-content>
+  <p>{{ data }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button matButton="elevated" style="color: white; background-color: rgb(175, 18, 18);" (click)="onConfirm(false)">
+    Não
+  </button>
+
+  <button matButton="elevated" style="color: white; background-color: rgb(6, 123, 128);" (click)="onConfirm(true)">
+    Sim
+  </button>
+</mat-dialog-actions>
