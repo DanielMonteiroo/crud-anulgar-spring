@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { AppMaterialModule } from '../../shared/app-material/app-material-module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CursosService } from '../service/cursosService';
@@ -20,8 +20,8 @@ export class CursoForm {
     private snackBar: MatSnackBar,private location: Location,private route: ActivatedRoute) {
     this.form = this.formBuilder.group({
       id: [''],
-      nome: [''],
-      categoria: ['']
+      nome: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(100)]],
+      categoria: ['',[Validators.required]]
     });
   }
 

@@ -5,6 +5,19 @@
   <form [formGroup]="form" class="min-width">
     <mat-form-field appearance="fill" class="largura-linha">
       <input matInput placeholder="NOME" formControlName="nome" >
+      @if (form.get('nome')?.invalid && form.get('nome')?.touched) {
+        <mat-error> <!-- estrutura de controle de erro para validação -->
+          @if (form.get('nome')?.hasError('required')) {
+            O nome é obrigatório.
+          }
+          @if (form.get('nome')?.hasError('minlength')) {
+            O nome deve ter pelo menos 3 caracteres.
+          }
+          @if (form.get('nome')?.hasError('maxlength')) {
+            O nome não pode ter mais de 100 caracteres.
+          }
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="largura-linha">
@@ -13,6 +26,11 @@
     <mat-option value="back-end">Back-End</mat-option>
     <mat-option value="front-end">Front-End</mat-option>
   </mat-select>
+  @if (form.get('categoria')?.invalid && form.get('categoria')?.touched) {
+    <mat-error><!-- estrutura de controle de erro para validação -->
+      A categoria é obrigatória.
+    </mat-error>
+  }
       <input matInput >
     </mat-form-field>
   </form>
