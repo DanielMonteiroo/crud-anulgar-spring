@@ -1,5 +1,5 @@
 package com.daniel.crud_spring.model;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,6 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data // Gera getters, setters, toString, equals e hashCode automaticamente
@@ -18,10 +21,16 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.AUTO) // Geração automática do ID
     private Long id;
 
-    @Column(length = 200,nullable = false) // Especifica detalhes da coluna
+    @NotBlank // Indica que o campo não pode ser vazio
+    @NotNull // Indica que o campo não pode ser nulo
+    @Length(min = 3, max = 10)
+    @Column(length = 100,nullable = false) // Especifica detalhes da coluna
     private String nome;
 
-    @Column(length = 20,nullable = false)
+    @NotNull
+    @Length(max = 100) // Limita o tamanho do campo entre 5 e 100 caracteres
+    @Pattern(regexp = "Back-end |Front-end") // Valida o padrão do campo
+    @Column(length = 10,nullable = false)
     private String categoria;
 
 

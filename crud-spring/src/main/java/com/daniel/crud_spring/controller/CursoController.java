@@ -1,8 +1,8 @@
 package com.daniel.crud_spring.controller;
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.daniel.crud_spring.model.Curso;
 import com.daniel.crud_spring.repository.CursoRepositorio;
-
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 
+@Validated // Habilita a validação de parâmetros de método, como @NotNull e @Positive
 @RestController // Indica que esta classe é um controlador REST e os métodos retornarão dados JSON
 @RequestMapping("/api/cursos")// Define a rota base para este controlador
 @AllArgsConstructor // Gera um construtor com um parâmetro para cada campo da classe, facilitando a injeção de dependências
@@ -28,20 +31,20 @@ public class CursoController {
         return cursoRepositorio.findAll(); // Retorna uma lista contendo o curso criado
     }
 
-    @GetMapping("/{id}") // Mapeia requisições GET para este método, com um parâmetro de caminho "id"
-    public ResponseEntity<Curso> buscaId(@PathVariable Long id) {
+    @GetMapping("/{id}") // Mapeia requisições GET para este método com um parâmetro de caminho "id"
+    public ResponseEntity<Curso> buscaId(@PathVariable @NotNull @Positive Long id) {
         return cursoRepositorio.findById(id)
                 .map(busca -> ResponseEntity.ok().body(busca)) //retorna o status 200 e o curso encontrado
                 .orElse(ResponseEntity.notFound().build()); //retorna o status 404 caso o curso não seja encontrado
     }
 
     @PostMapping // Mapeia requisições POST para este método
-    public ResponseEntity<Curso> inserir(@RequestBody Curso curso){
+    public ResponseEntity<Curso> inserir(@RequestBody @Valid Curso curso){
         return ResponseEntity.status(HttpStatus.CREATED).body(cursoRepositorio.save(curso)); //retorna o status 201 de objeto criado
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> atualizar(@PathVariable Long id, @RequestBody Curso curso){
+    public ResponseEntity<Curso> atualizar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Curso curso){
         return cursoRepositorio.findById(id)
                 .map(cursoExistente -> {
                     cursoExistente.setNome(curso.getNome());
@@ -53,7 +56,7 @@ public class CursoController {
     }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        public ResponseEntity<Void> deletar(@PathVariable @NotNull @Positive Long id) {
         return cursoRepositorio.findById(id)
                 .map(curso -> {
                     cursoRepositorio.deleteById(id);
