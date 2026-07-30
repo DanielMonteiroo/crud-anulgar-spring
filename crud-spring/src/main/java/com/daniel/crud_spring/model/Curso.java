@@ -1,6 +1,8 @@
 package com.daniel.crud_spring.model;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +17,8 @@ import lombok.Data;
 @Data // Gera getters, setters, toString, equals e hashCode automaticamente
 @Entity // Indica que esta classe é uma entidade JPA
 @Table(name = "cursos") // Especifica o nome da tabela no banco de dados
+@SQLDelete(sql = "UPDATE cursos SET status = 'Inativo' WHERE id = ?") // Define a ação de exclusão lógica
+@SQLRestriction("status = 'Ativo'") // Define um filtro para buscar apenas cursos ativos
 public class Curso {
 
     @Id // Indica que o campo é a chave primária
@@ -32,6 +36,12 @@ public class Curso {
     @Pattern(regexp = "Back-end |Front-end") // Valida o padrão do campo
     @Column(length = 10,nullable = false)
     private String categoria;
+
+    @NotNull
+    @Length(max = 100) // Limita o tamanho do campo entre 5 e 100 caracteres
+    @Pattern(regexp = "Ativo|Inativo") // Valida o padrão do campo
+    @Column(length = 10,nullable = false)
+    private String status = "Ativo"; // Campo para armazenar o status do curso, sem validação específica
 
 
     
