@@ -1,17 +1,12 @@
 package com.daniel.crud_spring.service;
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import com.daniel.crud_spring.exception.RecordNotfoundException;
 import com.daniel.crud_spring.model.Curso;
 import com.daniel.crud_spring.repository.CursoRepositorio;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -33,8 +28,9 @@ public class CursoService {
     }
 
     // Método para buscar um curso pelo ID
-      public Optional<Curso> buscaId(@PathVariable @NotNull @Positive Long id) {
-        return cursoRepositorio.findById(id);
+      public Curso buscaId(@PathVariable @NotNull @Positive Long id) {
+        return cursoRepositorio.findById(id).orElseThrow(() -> new RecordNotfoundException(id)); 
+        // Retorna o curso encontrado ou lança uma exceção se não encontrado
     }
 
     // Método para criar um novo curso
@@ -43,25 +39,21 @@ public class CursoService {
     }
 
     // Método para atualizar um curso existente
-    public Optional<Curso> atualizar(@NotNull @Positive Long id, @Valid Curso curso){
+    public Curso atualizar(@NotNull @Positive Long id, @Valid Curso curso){
         return cursoRepositorio.findById(id)
                 .map(cursoExistente -> {
                     cursoExistente.setNome(curso.getNome());
                     cursoExistente.setCategoria(curso.getCategoria());
                  return cursoRepositorio.save(cursoExistente);
                     
-                });
+                }).orElseThrow(() -> new RecordNotfoundException(id)); // Retorna o curso atualizado ou lança uma exceção se não encontrado
     }
 
     // Método para deletar um curso existente
-    public boolean deletar(@PathVariable @NotNull @Positive Long id) {
-        return cursoRepositorio.findById(id)
-                .map(curso -> {
-                    cursoRepositorio.deleteById(id);
-                    return true;
-                })
-                .orElse(false);
-            }   
+    public void deletar(@PathVariable @NotNull @Positive Long id) {
+         cursoRepositorio.delete(cursoRepositorio.findById(id).orElseThrow(() -> new RecordNotfoundException(id)));
+         // Deleta o curso encontrado ou lança uma exceção se não encontrado
+    }
 
 
 }//chave que fecha a classe CursoService

@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.daniel.crud_spring.model.Curso;
 import com.daniel.crud_spring.repository.CursoRepositorio;
 import com.daniel.crud_spring.service.CursoService;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -35,10 +35,9 @@ public class CursoController {
     }
 
     @GetMapping("/{id}") // Metodo para buscar um curso pelo ID, mapeado para requisições GET com um parâmetro de caminho
-    public ResponseEntity<Curso> buscaId(@PathVariable @NotNull @Positive Long id) {
-        return cursoService.buscaId(id)
-                .map(busca -> ResponseEntity.ok().body(busca)) //retorna o status 200 e o curso encontrado
-                .orElse(ResponseEntity.notFound().build()); //retorna o status 404 caso o curso não seja encontrado
+    public Curso buscaId(@PathVariable @NotNull @Positive Long id) {
+        return cursoService.buscaId(id);
+ 
     }
 
     @PostMapping // Metodo para criar um novo curso, mapeado para requisições POST
@@ -48,24 +47,15 @@ public class CursoController {
 
     // Metodo para atualizar um curso existente, mapeado para requisições PUT com um parâmetro de caminho
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> atualizar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Curso curso){
-        return cursoService.atualizar(id, curso)
-                .map(cursoExistente -> {
-                    cursoExistente.setNome(curso.getNome());
-                    cursoExistente.setCategoria(curso.getCategoria());
-                    Curso cursoAtualizado = cursoRepositorio.save(cursoExistente);
-                    return ResponseEntity.ok().body(cursoAtualizado); //retorna o status 200 e o curso atualizado
-                })
-                .orElse(ResponseEntity.notFound().build());//retorna o status 404 caso o curso não seja encontrado
+    public Curso atualizar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Curso curso){
+        return cursoService.atualizar(id, curso); // Retorna o curso atualizado ou lança uma exceção se não encontrado
     }
 
     // Metodo para deletar um curso existente, mapeado para requisições DELETE com um parâmetro de caminho
     @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deletar(@PathVariable @NotNull @Positive Long id) {
-        if (cursoService.deletar(id)){
-                    return ResponseEntity.noContent().<Void>build(); //retorna o status 204
-        }
-        return ResponseEntity.notFound().build(); //retorna o status 404 caso o curso não seja encontrado
+    @ResponseStatus(HttpStatus.NO_CONTENT) // Define o status HTTP como 204 No Content
+        public void deletar(@PathVariable @NotNull @Positive Long id) {
+        cursoService.deletar(id); // Deleta o curso encontrado ou lança uma exceção se não encontrado
     }
     
 }
