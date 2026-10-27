@@ -11,9 +11,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
 
-@Data // Gera getters, setters, toString, equals e hashCode automaticamente
 @Entity // Indica que esta classe é uma entidade JPA
 @Table(name = "cursos") // Especifica o nome da tabela no banco de dados
 @SQLDelete(sql = "UPDATE cursos SET status = 'Inativo' WHERE id = ?") // Define a ação de exclusão lógica
@@ -31,8 +29,8 @@ public class Curso {
     private String nome;
 
     @NotNull
-    @Length(max = 100) // Limita o tamanho do campo entre 5 e 100 caracteres
-    @Pattern(regexp = "Back-end |Front-end") // Valida o padrão do campo
+    @Length(min = 3, max = 100) // Limita o tamanho do campo entre 5 e 100 caracteres
+    @Pattern(regexp = "Back-end|Front-end") // Valida o padrão do campo
     @Column(length = 10,nullable = false)
     private String categoria;
 
@@ -42,6 +40,39 @@ public class Curso {
     @Column(length = 10,nullable = false)
     private String status = "Ativo"; // Campo para armazenar o status do curso, sem validação específica
 
+// Getters e Setters
+
+public Long getId() {
+    return id;
+}
+
+public void setId(Long id) {
+    this.id = id;
+}
+
+public String getNome() {
+    return nome;
+}
+
+public void setNome(String nome) {
+    this.nome = nome;
+}
+
+public String getCategoria() {
+    return categoria;
+}
+
+public void setCategoria(String categoria) {
+    this.categoria = categoria;
+}
+
+public String getStatus() {
+    return status;
+}
+
+public void setStatus(String status) {
+    this.status = status;
+}
 
     
 }
