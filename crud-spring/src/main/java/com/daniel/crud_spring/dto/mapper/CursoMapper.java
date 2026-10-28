@@ -1,7 +1,7 @@
 package com.daniel.crud_spring.dto.mapper;
 import org.springframework.stereotype.Component;
-
 import com.daniel.crud_spring.dto.CursoDTO;
+import com.daniel.crud_spring.enums.conversores.CategoriaConversor;
 import com.daniel.crud_spring.model.Curso;
 
 @Component 
@@ -21,6 +21,7 @@ public class CursoMapper {
     // Converte um objeto Curso em um objeto CursoDTO
     public Curso toEntity(CursoDTO curso2) {
         Curso curso = new Curso();
+        CategoriaConversor categoriaConversor = new CategoriaConversor(); // Instancia o conversor de categoria
 
         if (curso2 == null) {
             return null; // Retorna null se o cursoDTO for nulo
@@ -31,7 +32,7 @@ public class CursoMapper {
             curso.setId(curso2.id());
         }
         curso.setNome(curso2.nome());
-        curso.setCategoria(curso2.categoria());
+        curso.setCategoria(categoriaConversor.convertToEntityAttribute(curso2.categoria())); // Converte a categoria do cursoDTO para a entidade Curso
 
         return curso; // Retorna o objeto Curso convertido
     }

@@ -2,7 +2,10 @@ package com.daniel.crud_spring.model;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
+import com.daniel.crud_spring.enums.Categoria;
+import com.daniel.crud_spring.enums.conversores.CategoriaConversor;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,10 +32,11 @@ public class Curso {
     private String nome;
 
     @NotNull
-    @Length(min = 3, max = 100) // Limita o tamanho do campo entre 5 e 100 caracteres
-    @Pattern(regexp = "Back-end|Front-end") // Valida o padrão do campo
-    @Column(length = 10,nullable = false)
-    private String categoria;
+   // @Length(min = 3, max = 100) // Limita o tamanho do campo entre 5 e 100 caracteres
+  //  @Pattern(regexp = "Back-end|Front-end") // Valida o padrão do campo
+    @Column(nullable = false)
+    @Convert(converter = CategoriaConversor.class)
+    private Categoria categoria;
 
     @NotNull
     @Length(max = 100) // Limita o tamanho do campo entre 5 e 100 caracteres
@@ -58,11 +62,11 @@ public void setNome(String nome) {
     this.nome = nome;
 }
 
-public String getCategoria() {
+public Categoria getCategoria() {
     return categoria;
 }
 
-public void setCategoria(String categoria) {
+public void setCategoria(Categoria categoria) {
     this.categoria = categoria;
 }
 
