@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.daniel.crud_spring.dto.CursoDTO;
 import com.daniel.crud_spring.dto.mapper.CursoMapper;
-import com.daniel.crud_spring.enums.conversores.CategoriaConversor;
 import com.daniel.crud_spring.exception.RecordNotfoundException;
 import com.daniel.crud_spring.repository.CursoRepositorio;
 import jakarta.validation.Valid;
@@ -48,11 +47,10 @@ public class CursoService {
 
     // Método para atualizar um curso existente
     public CursoDTO atualizar(@NotNull @Positive Long id, @Valid CursoDTO curso){
-        CategoriaConversor categoriaConversor = new CategoriaConversor(); // Instancia o conversor de categoria
         return cursoRepositorio.findById(id)
                 .map(cursoExistente -> {
                     cursoExistente.setNome(curso.nome());
-                    cursoExistente.setCategoria(categoriaConversor.convertToEntityAttribute(curso.categoria()));// Atualiza o nome e a categoria do curso existente
+                    cursoExistente.setCategoria(cursoMapper.convertCategoria(curso.categoria())); // Atualiza o nome e a categoria do curso existente
                  return cursoMapper.toDTO(cursoRepositorio.save(cursoExistente)); // Retorna o curso atualizado
                     
                 }).orElseThrow(() -> new RecordNotfoundException(id)); // Retorna o curso atualizado ou lança uma exceção se não encontrado
