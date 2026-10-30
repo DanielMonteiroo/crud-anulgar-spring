@@ -1,5 +1,8 @@
 package com.daniel.crud_spring.dto.mapper;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
+import com.daniel.crud_spring.dto.AulaDTO;
 import com.daniel.crud_spring.dto.CursoDTO;
 import com.daniel.crud_spring.enums.Categoria;
 import com.daniel.crud_spring.model.Curso;
@@ -13,7 +16,11 @@ public class CursoMapper {
         if (curso == null) {
             return null; // Retorna null se o curso for nulo
         }
-        return new CursoDTO(curso.getId(), curso.getNome(), curso.getCategoria());
+        List<AulaDTO> aulasDTO = curso.getAulas()
+                .stream()
+                .map(aula -> new AulaDTO(aula.getId(), aula.getNome(), aula.getLinkUrl()))
+                .collect(Collectors.toList()); // Converte a lista de aulas do Curso para uma lista de AulaDTO
+        return new CursoDTO(curso.getId(), curso.getNome(), curso.getCategoria(), aulasDTO); // Cria um novo CursoDTO com os valores do Curso
     }
 
     // Converte um objeto Curso em um objeto CursoDTO
