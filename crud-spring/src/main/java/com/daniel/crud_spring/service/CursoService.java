@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.daniel.crud_spring.dto.CursoDTO;
 import com.daniel.crud_spring.dto.mapper.CursoMapper;
@@ -35,7 +34,7 @@ public class CursoService {
     }
 
     // Método para buscar um curso pelo ID
-      public CursoDTO buscaId(@PathVariable @NotNull @Positive Long id) {
+      public CursoDTO buscaId(@NotNull @Positive Long id) {
         return cursoRepositorio.findById(id).map(cursoMapper::toDTO).orElseThrow(() -> new RecordNotfoundException(id)); 
         // Retorna o curso encontrado ou lança uma exceção se não encontrado
     }
@@ -57,7 +56,7 @@ public class CursoService {
     }
 
     // Método para deletar um curso existente
-    public void deletar(@PathVariable @NotNull @Positive Long id) {
+    public void deletar(@NotNull @Positive Long id) {
          cursoRepositorio.delete(cursoRepositorio.findById(id).orElseThrow(() -> new RecordNotfoundException(id)));
          // Deleta o curso encontrado ou lança uma exceção se não encontrado
     }

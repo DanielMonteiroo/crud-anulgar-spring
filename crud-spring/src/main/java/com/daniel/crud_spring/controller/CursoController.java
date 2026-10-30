@@ -58,4 +58,4 @@ public class CursoController {
         cursoService.deletar(id); // Deleta o curso encontrado ou lança uma exceção se não encontrado
     }
     
-}
+}//chave que fecha a classe CursoController

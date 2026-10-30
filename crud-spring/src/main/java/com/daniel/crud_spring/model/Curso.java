@@ -1,4 +1,6 @@
 package com.daniel.crud_spring.model;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
@@ -6,12 +8,14 @@ import com.daniel.crud_spring.enums.Categoria;
 import com.daniel.crud_spring.enums.Status;
 import com.daniel.crud_spring.enums.conversores.CategoriaConversor;
 import com.daniel.crud_spring.enums.conversores.StatusConversor;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -45,9 +49,11 @@ public class Curso {
     @Column(length = 10,nullable = false)
     @Convert(converter = StatusConversor.class)
     private Status status = Status.ATIVO; // Campo para armazenar o status do curso, sem validação específica
+ 
+    @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "curso") // Define o relacionamento um-para-muitos com a entidade Aula
+    private List<Aula> aulas = new ArrayList<>(); // Lista de aulas associadas ao curso
 
 // Getters e Setters
-
 public Long getId() {
     return id;
 }
